@@ -1,0 +1,9 @@
+Round
+Selfish Bot chose 0 scoring 5.
+Selfless Bot chose 1 scoring 0.
+Round
+Selfish Bot chose 0 scoring 10.
+Selfless Bot chose 1 scoring 0.
+Round
+Selfish Bot chose 0 scoring 15.
+Selfless Bot chose 1 scoring 0.

@@ -2,16 +2,17 @@
  
  import java.util.ArrayList;
 
-public class IteratedPrisonerDilemna extends Game implements Subject{
+public class IteratedPrisonerDilemna extends Game{
 	int numRounds;
 	int roundsElapsed;
-	ArrayList<Observer> listeners;
+
 	
 	public IteratedPrisonerDilemna(int numRounds) {
 		super(2);
 		this.numRounds = numRounds;
 		this.roundsElapsed = -1;
-		this.listeners = new ArrayList<Observer>();
+		this.actionListeners = new ArrayList<Observer>();
+		this.gameListeners = new ArrayList<Observer>();
 	}
 
 	@Override
@@ -44,22 +45,19 @@ public class IteratedPrisonerDilemna extends Game implements Subject{
 			return new int[] {3,3};
 		}
 	}
-	public void register(Observer observer) {
-		this.listeners.add(observer);
+
+	public int getNumRounds() {
+		return numRounds;
 	}
-	public void deregister(Observer observer) {
-		this.listeners.remove(observer);
-	}
-	public void notifyListeners() {
-		for(Observer o: listeners) {
-			o.update(this);
-		}
+
+	public int getRoundsElapsed() {
+		return roundsElapsed;
 	}
 
 	public void hook1() {
-		notifyListeners();
+		notifyActionListeners();
 	}
 	public void hook2() {
-		notifyListeners();
+		notifyGameListeners();
 	}
 }

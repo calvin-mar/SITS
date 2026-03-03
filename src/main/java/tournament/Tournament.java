@@ -11,6 +11,7 @@ public class Tournament {
 		this.scoreboard = new ArrayList<TourneyPlayer>();
 		this.game = game;
 		this.bracketType = bracket;
+		this.bracketType.setParticipantList(scoreboard);
 		
 	}
 
@@ -21,7 +22,7 @@ public class Tournament {
 		
 		pair = bracketType.nextPair(currState);
 		while(pair[0] != null) {
-			currState = this.game.play(pair[1].player, pair[2].player);
+			currState = this.game.play(pair[0].player, pair[1].player);
 			pair = bracketType.nextPair(currState);
 		}
 	}
@@ -36,5 +37,8 @@ public class Tournament {
 	public void addParticipant(Participant p) {
 		TourneyPlayer newPlayer = new TourneyPlayer(p);
 		this.scoreboard.add(newPlayer);
+	}
+	public ArrayList<TourneyPlayer> getScoreboard() {
+		return this.scoreboard;
 	}
 }

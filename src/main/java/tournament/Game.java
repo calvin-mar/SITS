@@ -1,9 +1,13 @@
 package tournament;
 
+import java.util.ArrayList;
+
 public abstract class Game implements Subject{
 	int actions;
 	State currState;
 	int roundsTaken;
+	ArrayList<Observer> actionListeners;
+	ArrayList<Observer> gameListeners;
 	
 	public Game(int numActions) {
 		this.actions = numActions;
@@ -33,16 +37,34 @@ public abstract class Game implements Subject{
 	public int getActions() {
 		return actions;
 	}
+	public void registerActions(Observer observer) {
+		this.actionListeners.add(observer);
+	}
+	public void deregisterActions(Observer observer) {
+		this.actionListeners.remove(observer);
+	}
+	
+	public void registerGames(Observer observer) {
+		this.gameListeners.add(observer);
+	}
+	public void deregisterGames(Observer observer) {
+		this.gameListeners.remove(observer);
+	}
+	public void notifyActionListeners() {
+		for(Observer o: actionListeners) {
+			o.update(this);
+		}
+	}
+	public void notifyGameListeners() {
+		for(Observer o: gameListeners) {
+			o.update(this);
+		}
+	}
+	
 	public abstract boolean endGame();
 	public abstract int[] scoreActions(int player1Action, int player2Action);
 	
 	public State getCurrState() {
 		return currState;
-	}
-	public int getRoundsTaken() {
-		return roundsTaken;
-	}
-	public void setRoundsTaken(int roundsTaken) {
-		this.roundsTaken = roundsTaken;
 	}
 }

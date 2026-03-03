@@ -12,6 +12,9 @@ public class TourneyPlayer {
 		this.playersPlayed = new ArrayList<TourneyPlayer>();
 	}
 	
+	public String toString() {
+		return player.getName() + "\n";
+	}
 	public void increaseScore(int newScore) {
 		this.totalScore += newScore;
 	}
