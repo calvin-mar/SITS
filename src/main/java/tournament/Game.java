@@ -25,14 +25,14 @@ public abstract class Game implements Subject{
 	          this.currState.setP2Score(this.currState.getP2Score() + scores[1]);
 	          p1.updateMemory(currState);
 	          p2.updateMemory(currState);
-	          this.hook1();
+	          this.hookPerRound();
 	     }
-	     this.hook2();
+	     this.hookPerGame();
 	     return currState; 
 	}
-	public void hook1() {
+	public void hookPerRound() {
 	}
-	public void hook2() {
+	public void hookPerGame() {
 	}
 	public int getActions() {
 		return actions;

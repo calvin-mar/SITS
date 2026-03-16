@@ -47,6 +47,7 @@ class RemoteControllerTest {
 	@Autowired
 	private RestTestClient client;
 	
+	public record StateRecord(String p1Name, int p1Score, int p1Action, String p2Name, int p2Score, int p2Action) {};
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -66,7 +67,15 @@ class RemoteControllerTest {
 		client.get().uri("/makeChoice/2").exchange().expectBody(Integer.class).isEqualTo(1);
 		client.get().uri("/makeChoice/2").exchange().expectBody(Integer.class).isEqualTo(1);
 		
-		// ADD TESTING FOR UPDATE MEMORY
+		StateRecord state = new StateRecord("p1", 1, 0, "p2", 1, 0);
+		client.put().uri("/updateMemory").body(state).exchange().expectBody(String.class).isEqualTo("Successful update");
+		assertEquals("p1", remote.getParticipantType().getMemory().get(0).getP1Name());
+		assertEquals(1, remote.getParticipantType().getMemory().get(0).getP1Score());
+		assertEquals(0, remote.getParticipantType().getMemory().get(0).getP1Action());
+		assertEquals("p2", remote.getParticipantType().getMemory().get(0).getP2Name());
+		assertEquals(1, remote.getParticipantType().getMemory().get(0).getP2Score());
+		assertEquals(0, remote.getParticipantType().getMemory().get(0).getP2Action());
+
 	}
 
 }

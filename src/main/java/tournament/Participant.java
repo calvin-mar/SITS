@@ -20,6 +20,9 @@ public abstract class Participant {
 	public void clearMemory() {
 		memory.clear();
 	}
+	public ArrayList<State> getMemory(){
+		return memory;
+	}
 	
 	public abstract int makeChoice(int Actions);
 }

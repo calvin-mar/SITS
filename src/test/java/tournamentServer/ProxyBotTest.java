@@ -36,7 +36,21 @@ class ProxyBotTest {
 		assertEquals(1, testProxy.makeChoice(2));
 		assertEquals(0, testProxy.makeChoice(2));
 		
-		// ADD TESTING FOR UPDATE MEMORY
+
+		State state = new State("p1", "p2");
+		state.setP1Score(1);
+		state.setP2Score(1);
+		state.setP1Action(0);
+		state.setP2Action(0);
+		
+		testProxy.updateMemory(state);
+		
+		assertEquals("p1", server.getParticipantType().getMemory().get(0).getP1Name());
+		assertEquals(1, server.getParticipantType().getMemory().get(0).getP1Score());
+		assertEquals(0, server.getParticipantType().getMemory().get(0).getP1Action());
+		assertEquals("p2", server.getParticipantType().getMemory().get(0).getP2Name());
+		assertEquals(1, server.getParticipantType().getMemory().get(0).getP2Score());
+		assertEquals(0, server.getParticipantType().getMemory().get(0).getP2Action());
 	}
 
 }

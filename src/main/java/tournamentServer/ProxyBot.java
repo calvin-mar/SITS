@@ -24,8 +24,8 @@ public class ProxyBot extends Participant {
 	@Override
 	public void updateMemory(State newState) {
 		StateRecord sendState = new StateRecord(newState.getP1Name(), newState.getP1Score(), newState.getP1Action(), newState.getP2Name(), newState.getP2Score(), newState.getP2Action());
-		client.put().uri("/updateMemory").body(sendState);
-	}
+		client.put().uri("/updateMemory").body(sendState).retrieve().body(String.class);
+		}
 	
 	public ProxyBot(InetAddress iP, String name, int port) {
 		super();

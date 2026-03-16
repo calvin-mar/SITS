@@ -55,13 +55,15 @@ public class RemoteController {
 	
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/updateMemory")
-	public void updateMemory(@RequestBody StateRecord state) {
+	public String updateMemory(@RequestBody StateRecord state) {
 		State newState = new State(state.p1Name(), state.p2Name());
 		newState.setP1Action(state.p1Action());
 		newState.setP2Action(state.p2Action());
 		newState.setP1Score(state.p1Score());
 		newState.setP2Score(state.p2Score());
+		System.out.println(newState);
 		this.participantType.updateMemory(newState);
+		return "Successful update";
 	}
 	
 	public String getBotName() {

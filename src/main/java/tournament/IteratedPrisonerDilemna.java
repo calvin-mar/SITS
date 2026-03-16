@@ -54,10 +54,10 @@ public class IteratedPrisonerDilemna extends Game{
 		return roundsElapsed;
 	}
 
-	public void hook1() {
+	public void hookPerRound() {
 		notifyActionListeners();
 	}
-	public void hook2() {
+	public void hookPerGame() {
 		notifyGameListeners();
 	}
 }
