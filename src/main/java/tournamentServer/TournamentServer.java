@@ -1,8 +1,11 @@
 package tournamentServer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.util.Random;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
@@ -26,10 +32,14 @@ public class TournamentServer {
 	HashMap<String, Tournament> availableTournaments;
 	HashMap<String, Boolean> registerTournaments;
 	
+	@Autowired
+	private ServletWebServerApplicationContext serverContext;
+	
 	public record BotData(InetAddress IP, String botName, int port, String tournamentName) {};
 	
 	public TournamentServer() {
 		this.availableTournaments = new HashMap<String, Tournament>();
+		this.registerTournaments = new HashMap<String, Boolean>();
 	}
 	
 	public void addTournament(String name, Tournament tournament) {
@@ -47,13 +57,38 @@ public class TournamentServer {
 	
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/register")
-	public void register(@RequestBody BotData data){
-		Proxy proxy = new Proxy(data.IP(), data.botName(), data.port());
-		availableTournaments.get(data.tournamentName()).addParticipant(proxy);
+	public String register(@RequestBody BotData data){
+		System.out.println("Registration started.");
+		if(registerTournaments.containsKey(data.tournamentName()) && registerTournaments.get(data.tournamentName())) {
+			ProxyBot proxy = new ProxyBot(data.IP(), data.botName(), data.port());
+			availableTournaments.get(data.tournamentName()).addParticipant(proxy);
+			return "Successful Register";
+		}
+		else{
+			return "Unsuccessful Register";
+		}
 	}
 	
 	public void beginTournament(Tournament tournament) {
 		tournament.playTournament();
+	}
+	
+	public HashMap<String, Tournament> getAvailableTournaments(){
+		return availableTournaments;
+	}
+	
+	public InetAddress getIP() {
+		try {
+			return InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public int getPort() {
+		return this.serverContext.getWebServer().getPort();
 	}
 	
 	public static void main(String[] args) {
