@@ -18,24 +18,16 @@ public class ProxyBot extends Participant {
 	
 	@Override
 	public int makeChoice(int actions) {
-		try {
-			int choice = client.get().uri("/makeChoice/{actions}",actions).retrieve().body(Integer.class);
-			return choice;
-		} catch (ResourceAccessException e) {
-		 	e.printStackTrace();
-			return 0;
-		}
+		int choice = client.get().uri("/makeChoice/{actions}",actions).retrieve().body(Integer.class);
+		return choice;
 	}
 	
 	@Override
 	public void updateMemory(State newState) {
 		super.updateMemory(newState);
-		try {
-			StateRecord sendState = new StateRecord(newState.getP1Name(), newState.getP1Score(), newState.getP1Action(), newState.getP2Name(), newState.getP2Score(), newState.getP2Action());
-			client.put().uri("/updateMemory").body(sendState).retrieve().body(String.class);
-		} catch(ResourceAccessException e) {
-			e.printStackTrace();
-		}
+		StateRecord sendState = new StateRecord(newState.getP1Name(), newState.getP1Score(), newState.getP1Action(), newState.getP2Name(), newState.getP2Score(), newState.getP2Action());
+		client.put().uri("/updateMemory").body(sendState).retrieve().body(String.class);
+
 		}
 	
 	public ProxyBot(InetAddress iP, String name, int port) {

@@ -35,6 +35,10 @@ class TournamentServerTest {
 	Bracket bracket;
 	Game game;
 	
+	Tournament tournament2;
+	Bracket bracket2;
+	Game game2;
+	
 	public record BotData(InetAddress IP, String botName, int port, String tournamentName) {};
 
 	
@@ -49,6 +53,10 @@ class TournamentServerTest {
 		bracket = new RoundRobinBracket();
 		game = new IteratedPrisonerDilemna(3);
 		tournament = new Tournament(game, bracket);
+		
+		bracket2 = new RoundRobinBracket();
+		game2 = new IteratedPrisonerDilemna(3);
+		tournament2 = new Tournament(game, bracket);
 	}
 
 	@Test
@@ -71,17 +79,20 @@ class TournamentServerTest {
 		client.put().uri("/register").body(badData).exchange().expectBody(String.class).isEqualTo("Unsuccessful Register");
 		
 		// Try to run tournament through server
+		server.addTournament("RRPrisoners 2", tournament2);
+		Participant selfishParticipant = new SelfishBot();
 		Participant selflessParticipant = new SelflessBot();
 		Participant alternatingParticipant = new AlternatingBot();
 		
-		tournament.addParticipant(selflessParticipant);
-		tournament.addParticipant(alternatingParticipant);
+		tournament2.addParticipant(selfishParticipant);
+		tournament2.addParticipant(selflessParticipant);
+		tournament2.addParticipant(alternatingParticipant);
 		
-		server.beginTournament(tournament);
+		server.beginTournament(tournament2);
 		
-		assertEquals(22, tournament.getScoreboard().get(0).getTotalScore());
-		assertEquals(6, tournament.getScoreboard().get(1).getTotalScore());
-		assertEquals(13, tournament.getScoreboard().get(2).getTotalScore());
+		assertEquals(22, tournament2.getScoreboard().get(0).getTotalScore());
+		assertEquals(6, tournament2.getScoreboard().get(1).getTotalScore());
+		assertEquals(13, tournament2.getScoreboard().get(2).getTotalScore());
 	}
 
 }
