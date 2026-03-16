@@ -2,6 +2,7 @@ package tournamentServer;
 
 import java.net.InetAddress;
 
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 
 import tournament.*;
@@ -17,14 +18,24 @@ public class ProxyBot extends Participant {
 	
 	@Override
 	public int makeChoice(int actions) {
-		int choice = client.get().uri("/makeChoice/{actions}",actions).retrieve().body(Integer.class);
-		return choice;
+		try {
+			int choice = client.get().uri("/makeChoice/{actions}",actions).retrieve().body(Integer.class);
+			return choice;
+		} catch (ResourceAccessException e) {
+		 	e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	@Override
 	public void updateMemory(State newState) {
-		StateRecord sendState = new StateRecord(newState.getP1Name(), newState.getP1Score(), newState.getP1Action(), newState.getP2Name(), newState.getP2Score(), newState.getP2Action());
-		client.put().uri("/updateMemory").body(sendState).retrieve().body(String.class);
+		super.updateMemory(newState);
+		try {
+			StateRecord sendState = new StateRecord(newState.getP1Name(), newState.getP1Score(), newState.getP1Action(), newState.getP2Name(), newState.getP2Score(), newState.getP2Action());
+			client.put().uri("/updateMemory").body(sendState).retrieve().body(String.class);
+		} catch(ResourceAccessException e) {
+			e.printStackTrace();
+		}
 		}
 	
 	public ProxyBot(InetAddress iP, String name, int port) {

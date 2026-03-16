@@ -58,7 +58,6 @@ public class TournamentServer {
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/register")
 	public String register(@RequestBody BotData data){
-		System.out.println("Registration started.");
 		if(registerTournaments.containsKey(data.tournamentName()) && registerTournaments.get(data.tournamentName())) {
 			ProxyBot proxy = new ProxyBot(data.IP(), data.botName(), data.port());
 			availableTournaments.get(data.tournamentName()).addParticipant(proxy);
