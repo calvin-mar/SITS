@@ -20,9 +20,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Random;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 
 import tournament.*;
 
@@ -36,6 +38,7 @@ public class TournamentServer {
 	private ServletWebServerApplicationContext serverContext;
 	
 	public record BotData(InetAddress IP, String botName, int port, String tournamentName) {};
+	public record TournamentList(List<String> tournaments) {};
 	
 	public TournamentServer() {
 		this.availableTournaments = new HashMap<String, Tournament>();
@@ -74,6 +77,18 @@ public class TournamentServer {
 	
 	public HashMap<String, Tournament> getAvailableTournaments(){
 		return availableTournaments;
+	}
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/checkTournaments")
+	public TournamentList checkRegisterableTournaments(){
+		ArrayList<String> tourneys = new ArrayList<String>();
+		for(String key : availableTournaments.keySet()) {
+			if(registerTournaments.get(key)) {
+				tourneys.add(key);
+			}
+		}
+		TournamentList t = new TournamentList(tourneys);
+		return t;
 	}
 	
 	public InetAddress getIP() {
