@@ -33,6 +33,7 @@ import tournament.*;
 public class TournamentServer {
 	HashMap<String, Tournament> availableTournaments;
 	HashMap<String, Boolean> registerTournaments;
+	ArrayList<MoveListener> spectators;
 	
 	@Autowired
 	private ServletWebServerApplicationContext serverContext;
@@ -89,6 +90,36 @@ public class TournamentServer {
 		}
 		TournamentList t = new TournamentList(tourneys);
 		return t;
+	}
+	
+	public record SpectateInfo(String tournamentName, InetAddress ip, int port) {};
+	
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping("/spectate")
+	public void spectateTournment(@RequestBody SpectateInfo serverInfo) {
+		UserInfo u = new UserInfo(serverInfo.ip, serverInfo.port);
+		MoveListener newListener = new MoveListener(u);
+		
+		if(this.registerTournaments.containsKey(serverInfo.tournamentName )) {
+			this.spectators.add(newListener);
+			this.availableTournaments.get(serverInfo.tournamentName).getGame().registerActions(newListener);
+		}
+	}
+	
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping("/spectate")
+	public void stopSpectateTournment(@RequestBody SpectateInfo serverInfo) {
+		UserInfo u = new UserInfo(serverInfo.ip, serverInfo.port);
+		MoveListener listener = null;
+		
+		for(MoveListener l: spectators) {
+			if(l.getServerData() == u) {
+				listener = l;
+			}
+		}
+		if(!(listener == null)) {
+			this.availableTournaments.get(serverInfo.tournamentName).getGame().deregisterActions(listener);
+		}
 	}
 	
 	public InetAddress getIP() {

@@ -6,14 +6,16 @@ public abstract class Game implements Subject{
 	int actions;
 	State currState;
 	int roundsTaken;
+	int timeDelay;
 	ArrayList<Observer> actionListeners;
 	ArrayList<Observer> gameListeners;
 	
 	public Game(int numActions) {
 		this.actions = numActions;
 		this.roundsTaken = 0;
+		this.timeDelay = 1;
 	}
-	public State play(Participant p1, Participant p2) {
+	public State play(Participant p1, Participant p2){
 		int[] scores;
 		this.currState = new State( p1.getName(), p2.getName());
 		
@@ -26,6 +28,12 @@ public abstract class Game implements Subject{
 	          p1.updateMemory(currState);
 	          p2.updateMemory(currState);
 	          this.hookPerRound();
+	          try {
+	          Thread.sleep(timeDelay*1000);
+	          } catch (InterruptedException e) {
+	        	  Thread.currentThread().interrupt();
+	          }
+	          
 	     }
 	     this.hookPerGame();
 	     return currState; 

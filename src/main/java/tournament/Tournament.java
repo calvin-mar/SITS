@@ -30,6 +30,10 @@ public class Tournament {
 	public void setGame(Game game) {
 		this.game = game;
 	}
+	
+	public Game getGame() {
+		return this.game;
+	}
 
 	public void setBracketType(Bracket bracketType) {
 		this.bracketType = bracketType;
