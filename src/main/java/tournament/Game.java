@@ -69,6 +69,12 @@ public abstract class Game implements Subject{
 		}
 	}
 	
+	public int getTimeDelay() {
+		return timeDelay;
+	}
+	public void setTimeDelay(int timeDelay) {
+		this.timeDelay = timeDelay;
+	}
 	public abstract boolean endGame();
 	public abstract int[] scoreActions(int player1Action, int player2Action);
 	

@@ -107,7 +107,7 @@ public class TournamentServer {
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@PutMapping("/spectate")
+	@PutMapping("/stopSpectate")
 	public void stopSpectateTournment(@RequestBody SpectateInfo serverInfo) {
 		UserInfo u = new UserInfo(serverInfo.ip, serverInfo.port);
 		MoveListener listener = null;

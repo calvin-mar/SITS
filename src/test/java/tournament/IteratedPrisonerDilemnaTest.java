@@ -14,6 +14,7 @@ class IteratedPrisonerDilemnaTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		this.ipd = new IteratedPrisonerDilemna(3);
+		this.ipd.setTimeDelay(0);
 		participant1 = new SelfishBot();
 		participant2 = new SelflessBot();
 		participant3 = new AlternatingBot();

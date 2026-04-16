@@ -20,6 +20,7 @@ class ActionsFileLoggerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		game = new IteratedPrisonerDilemna(3);
+		game.setTimeDelay(0);
 		p1 = new SelfishBot();
 		p2 = new SelflessBot();
 		this.actionObserver = new ActionsFileLogger("actions.txt");

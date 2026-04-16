@@ -57,14 +57,17 @@ class TournamentServerTest {
 	void setUp() throws Exception {
 		bracket = new RoundRobinBracket();
 		game = new IteratedPrisonerDilemna(3);
+		game.setTimeDelay(0);
 		tournament = new Tournament(game, bracket);
 		
 		bracket2 = new RoundRobinBracket();
 		game2 = new IteratedPrisonerDilemna(3);
+		game2.setTimeDelay(0);
 		tournament2 = new Tournament(game2, bracket2);
 		
 		bracket3 = new RoundRobinBracket();
 		game3 = new IteratedPrisonerDilemna(3);
+		game3.setTimeDelay(0);
 		tournament3 = new Tournament(game3, bracket3);
 	}
 

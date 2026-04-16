@@ -35,6 +35,7 @@ class TournamentTest {
 		assertEquals(selflessParticipant, tournament.getScoreboard().get(1).getPlayer());
 		assertEquals(alternatingParticipant, tournament.getScoreboard().get(2).getPlayer());
 		
+		tournament.getGame().setTimeDelay(0);
 		tournament.playTournament();
 		
 		assertEquals(22, tournament.getScoreboard().get(0).getTotalScore());

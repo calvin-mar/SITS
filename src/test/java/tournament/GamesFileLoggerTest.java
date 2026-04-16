@@ -37,6 +37,7 @@ class GamesFileLoggerTest {
 	@Test
 	void observerTest() {
 		this.game.registerGames(gameObserver);
+		this.game.setTimeDelay(0);
 		this.game.play(p1, p2);
 		File file = new File("games.txt");
 		
