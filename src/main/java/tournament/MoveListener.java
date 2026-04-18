@@ -45,5 +45,10 @@ public class MoveListener implements Observer {
 		client.put().uri("/updateMoveList").body(moveData).retrieve().body(String.class);
 		
 	}
+	
+	public String toString() {
+		return "IP: " + serverData.getIp().getHostAddress() + "\n" +
+				"Port: " + serverData.getPort();
+	}
 
 }

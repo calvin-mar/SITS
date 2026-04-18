@@ -27,15 +27,21 @@ public class UserInfo {
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) { return true; }
-		if(!(o instanceof UserInfo)) { return false; }
+		if(!(o instanceof UserInfo)) { 
+			return false; }
 		
 		UserInfo that = (UserInfo) o;
-		
-		if(this.getPort() == that.getPort() && this.getIp() == that.getIp()) {
+		boolean n = this.getIp().getHostAddress().equals(that.getIp().getHostAddress());
+		if(this.getPort() == that.getPort() && this.getIp().getHostAddress().equals(that.getIp().getHostAddress())){
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+	
+	public String toString() {
+		return "IP: " + this.ip.getHostAddress() + "\n" +
+				"Port: " + this.port;
 	}
 }

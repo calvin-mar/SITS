@@ -123,6 +123,21 @@ class TournamentServerTest {
 		registerableT.add("RRPrisoners 3");
 		TournamentList t = new TournamentList(registerableT);
 		client.get().uri("/checkTournaments").exchange().expectBody(TournamentList.class).isEqualTo(t);
+	
+		// Testing spectateInfo
+		record SpectateInfo(String tournamentName, InetAddress ip, int port) {};
+
+		InetAddress testIP = InetAddress.getByName("10.14.5.64");
+		SpectateInfo s = new SpectateInfo("RRPrisoners", testIP, 1);
+		client.put().uri("/spectate").body(s).exchange().expectBody(String.class).isEqualTo("Successful register");
+		SpectateInfo s2 = new SpectateInfo("RRPrisoners 2", testIP, 1);
+		client.put().uri("/spectate").body(s2).exchange().expectBody(String.class).isEqualTo("Successful register");
+		
+		client.put().uri("/stopSpectate").body(s).exchange().expectBody(String.class).isEqualTo("Successful deregister");
+		client.put().uri("/stopSpectate").body(s2).exchange().expectBody(String.class).isEqualTo("Successful deregister");
+
+
+		
 	}
 
 }

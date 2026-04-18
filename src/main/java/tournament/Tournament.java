@@ -6,7 +6,16 @@ public class Tournament {
 	ArrayList<TourneyPlayer> scoreboard;
 	Game game;
 	Bracket bracketType;
+	boolean registerable;
 	
+	public boolean isRegisterable() {
+		return registerable;
+	}
+
+	public void setRegisterable(boolean registerable) {
+		this.registerable = registerable;
+	}
+
 	public Tournament(Game game, Bracket bracket) {
 		this.scoreboard = new ArrayList<TourneyPlayer>();
 		this.game = game;

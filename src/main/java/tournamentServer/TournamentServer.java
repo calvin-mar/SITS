@@ -32,7 +32,7 @@ import tournament.*;
 @RestController 
 public class TournamentServer {
 	HashMap<String, Tournament> availableTournaments;
-	HashMap<String, Boolean> registerTournaments;
+	HashMap<String, Tournament> activeTournaments;
 	ArrayList<MoveListener> spectators;
 	
 	@Autowired
@@ -43,26 +43,26 @@ public class TournamentServer {
 	
 	public TournamentServer() {
 		this.availableTournaments = new HashMap<String, Tournament>();
-		this.registerTournaments = new HashMap<String, Boolean>();
+		this.spectators = new ArrayList<MoveListener>();
+		this.activeTournaments = new HashMap<String, Tournament>();
 	}
 	
 	public void addTournament(String name, Tournament tournament) {
 		availableTournaments.put(name, tournament);
-		registerTournaments.put(name, false);
 	}
 	
 	public void beginRegistration(String tournament) {
-		registerTournaments.put(tournament, true);
+		availableTournaments.get(tournament).setRegisterable(true);
 	}
 	
 	public void endRegistration(String tournament) {
-		registerTournaments.put(tournament, false);
+		availableTournaments.get(tournament).setRegisterable(false);
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/register")
 	public String register(@RequestBody BotData data){
-		if(registerTournaments.containsKey(data.tournamentName()) && registerTournaments.get(data.tournamentName())) {
+		if(availableTournaments.containsKey(data.tournamentName()) && availableTournaments.get(data.tournamentName()).isRegisterable()) {
 			ProxyBot proxy = new ProxyBot(data.IP(), data.botName(), data.port());
 			availableTournaments.get(data.tournamentName()).addParticipant(proxy);
 			return "Successful Register";
@@ -73,7 +73,14 @@ public class TournamentServer {
 	}
 	
 	public void beginTournament(Tournament tournament) {
-		tournament.playTournament();
+		for(String key : availableTournaments.keySet()) {
+			if(availableTournaments.get(key) == tournament) {
+				activeTournaments.put(key, tournament);
+				tournament.playTournament();
+				activeTournaments.remove(key);
+			}
+		}
+		
 	}
 	
 	public HashMap<String, Tournament> getAvailableTournaments(){
@@ -84,7 +91,7 @@ public class TournamentServer {
 	public TournamentList checkRegisterableTournaments(){
 		ArrayList<String> tourneys = new ArrayList<String>();
 		for(String key : availableTournaments.keySet()) {
-			if(registerTournaments.get(key)) {
+			if(availableTournaments.get(key).isRegisterable()) {
 				tourneys.add(key);
 			}
 		}
@@ -96,30 +103,34 @@ public class TournamentServer {
 	
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/spectate")
-	public void spectateTournment(@RequestBody SpectateInfo serverInfo) {
+	public String spectateTournment(@RequestBody SpectateInfo serverInfo) {
 		UserInfo u = new UserInfo(serverInfo.ip, serverInfo.port);
 		MoveListener newListener = new MoveListener(u);
 		
-		if(this.registerTournaments.containsKey(serverInfo.tournamentName )) {
+		if(this.availableTournaments.containsKey(serverInfo.tournamentName)) {
 			this.spectators.add(newListener);
 			this.availableTournaments.get(serverInfo.tournamentName).getGame().registerActions(newListener);
+			return "Successful register";
 		}
+		return "Register failed";
+		
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/stopSpectate")
-	public void stopSpectateTournment(@RequestBody SpectateInfo serverInfo) {
+	public String stopSpectateTournment(@RequestBody SpectateInfo serverInfo) {
 		UserInfo u = new UserInfo(serverInfo.ip, serverInfo.port);
 		MoveListener listener = null;
-		
 		for(MoveListener l: spectators) {
-			if(l.getServerData() == u) {
+			if(l.getServerData().equals(u)) {
 				listener = l;
 			}
 		}
 		if(!(listener == null)) {
 			this.availableTournaments.get(serverInfo.tournamentName).getGame().deregisterActions(listener);
+			return "Successful deregister";
 		}
+		return "Deregister failed";
 	}
 	
 	public InetAddress getIP() {

@@ -1,6 +1,7 @@
 package models;
 
 import java.io.IOException;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +15,8 @@ public class TournamentServerModel {
 	UserClient serverClient;
 	ObservableList<String> moveList;
 	Scene scene;
+	
+	public record TournamentList(List<String> tournaments) {};
 	
 	public TournamentServerModel(Scene scene) {
 		ObservableList<String> moveList = FXCollections.observableArrayList();
@@ -45,7 +48,8 @@ public class TournamentServerModel {
 	      // TODO Auto-generated catch block
 	      e.printStackTrace();
 	    }
-		
+	    TournamentList getList = serverClient.getClient().get().uri("/checkTournaments").retrieve().body(TournamentList.class);
+		this.moveList = (ObservableList<String>) getList.tournaments;
 	}
 	
 	public void showServerPicker() throws IOException {
