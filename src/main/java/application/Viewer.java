@@ -1,5 +1,9 @@
 package application;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +15,8 @@ import views.*;
 
 public class Viewer extends Application{
 	
+	ConfigurableApplicationContext context;
+	
 	@Override
 	public void start(Stage stage) throws Exception{
 		FXMLLoader loader = new FXMLLoader();
@@ -20,10 +26,20 @@ public class Viewer extends Application{
 		
 		ConnectToServerController controller = loader.getController();
 		Scene s = new Scene(view);
-		controller.setModel(new TournamentServerModel(s));
+		TournamentServerModel model = new TournamentServerModel(s);
+		controller.setModel(model);
+		
+		this.context = SpringApplication.run(UserServer.class);
+		UserServer server = this.context.getBean(UserServer.class);
+		server.setModel(model);
 		
 		stage.setScene(s);
 		stage.show();
+	}
+	
+	@Override
+	public void stop() {
+		SpringApplication.exit(this.context, () -> 0);
 	}
 	
 	public static void main(String[] args) {
