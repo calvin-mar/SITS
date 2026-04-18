@@ -33,6 +33,9 @@ public class TournamentServerModel {
 
 	public void showServerList() throws IOException {
 		System.out.println("Switch to TournamentListView");
+		TournamentList getList = serverClient.getClient().get().uri("/checkTournaments").retrieve().body(TournamentList.class);
+		System.out.println(getList.tournaments);
+		this.moveList = FXCollections.observableArrayList(getList.tournaments);
 		
 		FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(TournamentServerModel.class
@@ -48,9 +51,7 @@ public class TournamentServerModel {
 	      // TODO Auto-generated catch block
 	      e.printStackTrace();
 	    }
-	    TournamentList getList = serverClient.getClient().get().uri("/checkTournaments").retrieve().body(TournamentList.class);
-		this.moveList = (ObservableList<String>) getList.tournaments;
-	}
+	    		}
 	
 	public void showServerPicker() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
