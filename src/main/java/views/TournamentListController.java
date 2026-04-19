@@ -21,11 +21,11 @@ public class TournamentListController {
 	
 	public void setModel(TournamentServerModel model) {
 		this.model = model;
-		ListOfMoves.setItems(model.getMoveList());
+		ListOfTournaments.setItems(model.getTournamentList());
 	}
-	
+
 	@FXML
-	private ListView ListOfMoves;	
+	private ListView ListOfTournaments;	
 	
 	@FXML
 	void onClickBack(ActionEvent event) throws IOException {

@@ -1,6 +1,7 @@
 package models;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -14,12 +15,14 @@ import views.*;
 public class TournamentServerModel {
 	UserClient serverClient;
 	ObservableList<String> moveList;
+	ObservableList<String> tournamentList;
 	Scene scene;
 	
 	public record TournamentList(List<String> tournaments) {};
 	
 	public TournamentServerModel(Scene scene) {
-		ObservableList<String> moveList = FXCollections.observableArrayList();
+		this.tournamentList = FXCollections.observableArrayList();
+		this.moveList = FXCollections.observableArrayList();
 		this.scene = scene;
 	}
 	
@@ -34,8 +37,7 @@ public class TournamentServerModel {
 	public void showServerList() throws IOException {
 		System.out.println("Switch to TournamentListView");
 		TournamentList getList = serverClient.getClient().get().uri("/checkTournaments").retrieve().body(TournamentList.class);
-		System.out.println(getList.tournaments);
-		this.moveList = FXCollections.observableArrayList(getList.tournaments);
+		this.tournamentList = FXCollections.observableArrayList(getList.tournaments);
 		
 		FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(TournamentServerModel.class
@@ -70,7 +72,27 @@ public class TournamentServerModel {
 	    }
 	}
 	
+	public void showActiveTournament(String tournamentName) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+	    loader.setLocation(TournamentServerModel.class
+	        .getResource("../views/ActiveTournamentView.fxml"));
+	    try {
+	      Pane view = loader.load();
+	      ActiveTournamentController cont = loader.getController();
+	      cont.setModel(this, tournamentName);
+	      
+	      scene.setRoot(view);
+	      
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    }
+	}
+	
 	public ObservableList<String> getMoveList(){
-		return moveList;
+		return this.moveList;
+	}
+	public ObservableList<String> getTournamentList(){
+		return this.tournamentList;
 	}
 }

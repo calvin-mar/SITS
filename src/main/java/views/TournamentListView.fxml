@@ -24,7 +24,7 @@
 				</HBox>
 				<ScrollPane prefHeight="200.0" prefWidth="200.0">
 					<content>
-						<ListView fx:id="ListOfMoves" prefHeight="200.0" prefWidth="583.0" />
+						<ListView fx:id="ListOfTournaments" prefHeight="200.0" prefWidth="583.0" />
 					</content>
 				</ScrollPane>
 			</children>

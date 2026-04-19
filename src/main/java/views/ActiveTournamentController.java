@@ -1,0 +1,35 @@
+package views;
+
+import javafx.beans.binding.Bindings;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
+import javafx.util.converter.*;
+import models.*;
+
+public class ActiveTournamentController {
+	TournamentServerModel model;
+	
+	public void setModel(TournamentServerModel model, String name) {
+		this.model = model;
+		MovesListView.setItems(model.getMoveList());
+		TournamentNameLabel.setText(name);
+	}
+	
+	@FXML
+	private Label TournamentNameLabel;
+	
+	@FXML
+	private ListView MovesListView;
+	
+	@FXML
+	void onClickBack(ActionEvent event) {
+		System.out.println("Stop spectate");
+	}
+	
+	
+	
+}

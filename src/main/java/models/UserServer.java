@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javafx.application.Platform;
 import remoteBots.RemoteController;
 
 @SpringBootApplication
@@ -36,6 +37,7 @@ public class UserServer {
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/updateMoveList")
 	public void setNextMove(@RequestBody Move newMove) {
+		Platform.runLater(() ->
 		model.getMoveList().add("--Participant 1-- \n" +
 				"Name: " + newMove.p1Name + 
 				"\nScore: " + newMove.p1Score +
@@ -43,7 +45,7 @@ public class UserServer {
 				"\n--Participant 2-- \n" +
 				"Name: " + newMove.p2Name + 
 				"\nScore: " + newMove.p2Score +
-				"\nAction: " + newMove.p2Action + "\n");
+				"\nAction: " + newMove.p2Action + "\n"));
 	}
 	
 	public void run() {
