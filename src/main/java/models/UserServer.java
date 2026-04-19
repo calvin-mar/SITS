@@ -1,5 +1,8 @@
 package models;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -25,11 +28,17 @@ import remoteBots.RemoteController;
 public class UserServer {
 	TournamentServerModel model;
 	
+	@Autowired
+	private ServletWebServerApplicationContext serverContext;
+	
 	public TournamentServerModel getModel() {
 		return model;
 	}
 	public void setModel(TournamentServerModel model) {
 		this.model = model;
+		model.setIp(this.getIP());
+		model.setPort(this.getPort());
+		
 	}
 	
 	public record Move(String p1Name, int p1Score, int p1Action, String p2Name, int p2Score, int p2Action) {};
@@ -48,8 +57,18 @@ public class UserServer {
 				"\nAction: " + newMove.p2Action + "\n"));
 	}
 	
-	public void run() {
-		
+	public InetAddress getIP() {
+		try {
+			return InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public int getPort() {
+		return this.serverContext.getWebServer().getPort();
 	}
 	
 	public void main(String args) {

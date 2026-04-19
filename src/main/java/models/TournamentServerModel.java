@@ -1,6 +1,7 @@
 package models;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,24 @@ public class TournamentServerModel {
 	ObservableList<String> moveList;
 	ObservableList<String> tournamentList;
 	Scene scene;
+	InetAddress ip;
+	int port;
 	
+	public InetAddress getIp() {
+		return ip;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setIp(InetAddress ip) {
+		this.ip = ip;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
 	public record TournamentList(List<String> tournaments) {};
 	
 	public TournamentServerModel(Scene scene) {
