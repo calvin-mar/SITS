@@ -112,7 +112,6 @@ class TournamentServerTest {
 		assertEquals(13, tournament2.getScoreboard().get(2).getTotalScore());
 		
 		ArrayList<String> registerableT = new ArrayList<String>();
-		registerableT.add("RRPrisoners 2");
 		
 		
 		tournament3.addParticipant(selfishParticipant);

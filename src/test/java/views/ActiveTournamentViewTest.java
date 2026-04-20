@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.util.WaitForAsyncUtils;
 
 import application.Viewer;
 import javafx.application.Platform;
@@ -71,15 +72,10 @@ class ActiveTournamentViewTest {
 				"\nScore: " + p2Score +
 				"\nAction: " + p2Action)
 		);
+		WaitForAsyncUtils.waitForFxEvents();
 	}
 	
 	public void verifyUpdate(FxRobot robot, String p1Name, String p1Score, String p1Action, String p2Name, String p2Score, String p2Action) {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		robot.clickOn("--Participant 1-- \n" +
 				"Name: " + p1Name + 
 				"\nScore: " + p1Score +
