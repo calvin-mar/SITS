@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Tournament {
 	
-	ArrayList<TourneyPlayer> scoreboard;
+	volatile ArrayList<TourneyPlayer> scoreboard;
 	Game game;
 	Bracket bracketType;
 	boolean registerable;
@@ -24,7 +24,7 @@ public class Tournament {
 		
 	}
 
-	public void playTournament() {
+	public void run() {
 		State currState = null;
 		TourneyPlayer[] pair = {null, null};
 		
@@ -34,6 +34,10 @@ public class Tournament {
 			currState = this.game.play(pair[0].player, pair[1].player);
 			pair = bracketType.nextPair(currState);
 		}
+	}
+	
+	public void playTournament() {
+		new Thread(() -> run()).run();
 	}
 
 	public void setGame(Game game) {

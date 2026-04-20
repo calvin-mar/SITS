@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public abstract class Participant {
 	String name;
-	ArrayList<State> memory;
+	volatile ArrayList<State> memory;
 	
 	public Participant() {
 		memory = new ArrayList<State>();

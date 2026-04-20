@@ -34,19 +34,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @ExtendWith(ApplicationExtension.class)
-class TournamentListViewTest {
+class ActiveTournamentViewTest {
 	
 	ConfigurableApplicationContext context;
-	mockTournamentModel model;
-	
-	class mockTournamentModel extends TournamentServerModel{
-		
-		public mockTournamentModel(Scene scene) {
-			super(scene);
-			// TODO Auto-generated constructor stub
-		}
-		
-	}
+	TournamentServerModel model;
 	
 	
 	@Start
@@ -58,7 +49,7 @@ class TournamentListViewTest {
 		
 		ActiveTournamentController controller = loader.getController();
 		Scene s = new Scene(view);
-		this.model = new mockTournamentModel(s);
+		this.model = new TournamentServerModel(s);
 		controller.setModel(this.model, "RRPrisoners");
 		
 		this.context = SpringApplication.run(UserServer.class);

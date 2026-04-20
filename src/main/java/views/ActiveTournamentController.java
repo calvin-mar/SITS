@@ -1,5 +1,7 @@
 package views;
 
+import java.io.IOException;
+
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 import javafx.util.converter.*;
 import models.*;
+import views.TournamentListController.SpectateInfo;
 
 public class ActiveTournamentController {
 	TournamentServerModel model;
@@ -28,6 +31,17 @@ public class ActiveTournamentController {
 	@FXML
 	void onClickBack(ActionEvent event) {
 		System.out.println("Stop spectate");
+		String tournamentName = TournamentNameLabel.getText();
+		SpectateInfo serverInfo = new SpectateInfo(tournamentName,model.getIp(), model.getPort());
+		
+		model.getServerClient().getClient().put().uri("/stopSpectate").body(serverInfo);
+		
+		try {
+			model.showServerList();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

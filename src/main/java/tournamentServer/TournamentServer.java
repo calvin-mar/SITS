@@ -32,7 +32,7 @@ import tournament.*;
 @RestController 
 public class TournamentServer {
 	HashMap<String, Tournament> availableTournaments;
-	HashMap<String, Tournament> activeTournaments;
+	volatile ArrayList<String> activeTournaments;
 	ArrayList<MoveListener> spectators;
 	
 	@Autowired
@@ -44,7 +44,7 @@ public class TournamentServer {
 	public TournamentServer() {
 		this.availableTournaments = new HashMap<String, Tournament>();
 		this.spectators = new ArrayList<MoveListener>();
-		this.activeTournaments = new HashMap<String, Tournament>();
+		this.activeTournaments = new ArrayList<String>();
 	}
 	
 	public void addTournament(String name, Tournament tournament) {
@@ -75,12 +75,16 @@ public class TournamentServer {
 	public void beginTournament(Tournament tournament) {
 		for(String key : availableTournaments.keySet()) {
 			if(availableTournaments.get(key) == tournament) {
-				activeTournaments.put(key, tournament);
+				availableTournaments.get(key).setRegisterable(false);
+				activeTournaments.add(key);
 				tournament.playTournament();
 				activeTournaments.remove(key);
 			}
 		}
-		
+	}
+	
+	public void playTournament(Tournament tournament) {
+		new Thread(() -> beginTournament(tournament)).run();
 	}
 	
 	public HashMap<String, Tournament> getAvailableTournaments(){
@@ -91,7 +95,10 @@ public class TournamentServer {
 	public TournamentList checkRegisterableTournaments(){
 		ArrayList<String> tourneys = new ArrayList<String>();
 		for(String key : availableTournaments.keySet()) {
-			if(availableTournaments.get(key).isRegisterable()) {
+			if(activeTournaments.contains(key)) {
+				tourneys.add(key + " (Running)");
+			}
+			else if(availableTournaments.get(key).isRegisterable()) {
 				tourneys.add(key);
 			}
 		}
