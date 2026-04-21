@@ -93,14 +93,11 @@ class ActiveTournamentViewTest {
 	
 	@Test
 	public void testList(FxRobot robot) {
-		robot.clickOn("#TournamentNameLabel");
+		robot.lookup("#TournamentNameLabel").queryAs(Label.class);
 		robot.clickOn("RRPrisoners");
 		testMove(robot, "Robot 1", "1", "0", "Robot 2", "1", "0");
 		testMove(robot, "Robot 1", "6", "1", "Robot 2", "1", "0");
 		testMove(robot, "Robot 1", "6", "0", "Robot 2", "6", "1");
 		testMove(robot, "Robot 1", "9", "1", "Robot 2", "9", "1");
-
-
-
 	}
 }

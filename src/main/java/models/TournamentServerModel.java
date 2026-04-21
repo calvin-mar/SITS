@@ -53,7 +53,6 @@ public class TournamentServerModel {
 	}
 
 	public void showServerList() throws IOException {
-		System.out.println("Switch to TournamentListView");
 		TournamentList getList = serverClient.getClient().get().uri("/checkTournaments").retrieve().body(TournamentList.class);
 		this.tournamentList = FXCollections.observableArrayList(getList.tournaments);
 		

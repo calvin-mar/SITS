@@ -84,7 +84,7 @@ public class TournamentServer {
 	}
 	
 	public void playTournament(Tournament tournament) {
-		new Thread(() -> beginTournament(tournament)).run();
+		new Thread(() -> beginTournament(tournament)).start();
 	}
 	
 	public HashMap<String, Tournament> getAvailableTournaments(){
@@ -106,14 +106,13 @@ public class TournamentServer {
 		return t;
 	}
 	
-	public record SpectateInfo(String tournamentName, InetAddress ip, int port) {};
+	public record SpectateInfo(String tournamentName, String ip, int port) {};
 	
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/spectate")
 	public String spectateTournment(@RequestBody SpectateInfo serverInfo) {
-		UserInfo u = new UserInfo(serverInfo.ip, serverInfo.port);
+		UserInfo u = new UserInfo(serverInfo.ip(), serverInfo.port());
 		MoveListener newListener = new MoveListener(u);
-		
 		if(this.availableTournaments.containsKey(serverInfo.tournamentName)) {
 			this.spectators.add(newListener);
 			this.availableTournaments.get(serverInfo.tournamentName).getGame().registerActions(newListener);
@@ -126,7 +125,7 @@ public class TournamentServer {
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/stopSpectate")
 	public String stopSpectateTournment(@RequestBody SpectateInfo serverInfo) {
-		UserInfo u = new UserInfo(serverInfo.ip, serverInfo.port);
+		UserInfo u = new UserInfo(serverInfo.ip(), serverInfo.port());
 		MoveListener listener = null;
 		for(MoveListener l: spectators) {
 			if(l.getServerData().equals(u)) {

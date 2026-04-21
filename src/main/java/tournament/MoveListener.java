@@ -30,7 +30,7 @@ public class MoveListener implements Observer {
 		
 		this.serverData = serverData;
 		this.client = RestClient.builder()
-				.baseUrl("http://" + serverData.getIp().getHostAddress() + ":" + String.valueOf(serverData.getPort()))
+				.baseUrl("http://" + serverData.getIp() + ":" + String.valueOf(serverData.getPort()))
 				.build();
 	}
 	
@@ -47,7 +47,7 @@ public class MoveListener implements Observer {
 	}
 	
 	public String toString() {
-		return "IP: " + serverData.getIp().getHostAddress() + "\n" +
+		return "IP: " + serverData.getIp() + "\n" +
 				"Port: " + serverData.getPort();
 	}
 

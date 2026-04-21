@@ -26,10 +26,7 @@ public class ConnectToServerController {
 	private TextField PortNumTextField;
 	
 	@FXML
-	void onClickConnect(ActionEvent event) throws NumberFormatException, IOException {
-		
-		System.out.println("Button Clicked");
-		
+	void onClickConnect(ActionEvent event) throws NumberFormatException, IOException {		
 		UserClient uc = new UserClient(InetAddress.getByName(
 				IPTextField.getText()), Integer.valueOf(PortNumTextField.getText()));
 		

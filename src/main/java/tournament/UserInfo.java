@@ -3,21 +3,21 @@ package tournament;
 import java.net.InetAddress;
 
 public class UserInfo {
-	InetAddress ip;
+	String ip;
 	int port;
 	
-	public UserInfo(InetAddress ip, int port) {
+	public UserInfo(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
 	}
 	
-	public InetAddress getIp() {
+	public String getIp() {
 		return ip;
 	}
 	public int getPort() {
 		return port;
 	}
-	public void setIp(InetAddress ip) {
+	public void setIp(String ip) {
 		this.ip = ip;
 	}
 	public void setPort(int port) {
@@ -31,8 +31,8 @@ public class UserInfo {
 			return false; }
 		
 		UserInfo that = (UserInfo) o;
-		boolean n = this.getIp().getHostAddress().equals(that.getIp().getHostAddress());
-		if(this.getPort() == that.getPort() && this.getIp().getHostAddress().equals(that.getIp().getHostAddress())){
+		boolean n = this.getIp().equals(that.getIp());
+		if(this.getPort() == that.getPort() && this.getIp().equals(that.getIp())){
 			return true;
 		}
 		else {
@@ -41,7 +41,7 @@ public class UserInfo {
 	}
 	
 	public String toString() {
-		return "IP: " + this.ip.getHostAddress() + "\n" +
+		return "IP: " + this.ip + "\n" +
 				"Port: " + this.port;
 	}
 }

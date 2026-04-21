@@ -18,7 +18,7 @@ import models.*;
 public class TournamentListController {
 	TournamentServerModel model;
 	
-	public record SpectateInfo(String tournamentName, InetAddress ip, int port) {};
+	public record SpectateInfo(String tournamentName, String ip, int port) {};
 
 	
 	public void setModel(TournamentServerModel model) {
@@ -31,24 +31,24 @@ public class TournamentListController {
 	
 	@FXML
 	void onClickBack(ActionEvent event) throws IOException {
-		System.out.println("Back");
 		model.setServerClient(null);
 		model.showServerPicker();
 	}
 	
 	@FXML 
 	void onClickView(ActionEvent event) {
-		System.out.println("Spectate");
 		String selected = (String) ListOfTournaments.getSelectionModel().getSelectedItem();
-		
-		SpectateInfo serverInfo = new SpectateInfo(selected,model.getIp(), model.getPort());
-		model.getServerClient().getClient().put().uri("/spectate").body(serverInfo);
-		
-		try {
-			model.showActiveTournament(selected);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(selected.length() > 10 && selected.substring(selected.length() - 9, selected.length()).equals("(Running)")) {
+			selected = selected.substring(0, selected.length() - 10);
+			
+			SpectateInfo serverInfo = new SpectateInfo(selected,model.getIp().getHostAddress(), model.getPort());
+			model.getServerClient().getClient().put().uri("/spectate").body(serverInfo).retrieve().toBodilessEntity();
+			try {
+				model.showActiveTournament(selected);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

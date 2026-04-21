@@ -30,9 +30,8 @@ public class ActiveTournamentController {
 	
 	@FXML
 	void onClickBack(ActionEvent event) {
-		System.out.println("Stop spectate");
 		String tournamentName = TournamentNameLabel.getText();
-		SpectateInfo serverInfo = new SpectateInfo(tournamentName,model.getIp(), model.getPort());
+		SpectateInfo serverInfo = new SpectateInfo(tournamentName,model.getIp().getHostAddress(), model.getPort());
 		
 		model.getServerClient().getClient().put().uri("/stopSpectate").body(serverInfo);
 		

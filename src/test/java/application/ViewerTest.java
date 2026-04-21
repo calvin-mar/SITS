@@ -4,11 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -53,6 +56,8 @@ class ViewerTest {
 	SelfishBot p1;
 	SelflessBot p2;
 	AlternatingBot p3;
+	
+	ConfigurableApplicationContext context;
 
 	@Autowired
 	private TournamentServer server;
@@ -90,7 +95,12 @@ class ViewerTest {
 		
 		ConnectToServerController controller = loader.getController();
 		Scene s = new Scene(view);
-		controller.setModel(new TournamentServerModel(s));
+		TournamentServerModel model = new TournamentServerModel(s);
+		controller.setModel(model);
+		
+		this.context = SpringApplication.run(UserServer.class);
+		UserServer server = this.context.getBean(UserServer.class);
+		server.setModel(model);
 		
 		stage.setScene(s);
 		stage.show();
@@ -135,11 +145,34 @@ class ViewerTest {
 		server.beginRegistration("RRPrisoners");
 		server.beginRegistration("RRPrisoners 3");
 		enterServerInfo(robot,server.getIP().getHostAddress(), String.valueOf(server.getPort()));
-		connect(robot);
-		robot.clickOn("RRPrisoners");
 		server.playTournament(tournament);
+		connect(robot);
+		robot.clickOn("RRPrisoners (Running)");
+		//robot.clickOn("#SpectateButton");
 		robot.clickOn("#SpectateButton");
-		testMove(robot, "Selfish Bot", "5", "0", "SelflessBot", "0", "1");
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		
+		testMove(robot, "Selfish Bot", "1", "0", "Alternating Bot", "1", "0");
+		testMove(robot, "Selfish Bot", "6", "0", "Alternating Bot", "1", "1");
+		testMove(robot, "Selfish Bot", "7", "0", "Alternating Bot", "2", "0");
+		
+		testMove(robot, "Selfless Bot", "3", "1", "Alternating Bot", "3", "1");
+		testMove(robot, "Selfless Bot", "3", "1", "Alternating Bot", "8", "0");
+		testMove(robot, "Selfless Bot", "6", "1", "Alternating Bot", "11", "1");
+	}
+	
+	@AfterEach
+	void tearDown() {
+	    if (context != null) {
+	        context.close();
+	    }
 	}
 
 }
