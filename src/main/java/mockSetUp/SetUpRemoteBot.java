@@ -21,5 +21,6 @@ public class SetUpRemoteBot {
 		botServer.setBotName("Remote Bot");
 		botServer.setParticipantType(p);
 		botServer.setRegistrar(baseURL);
+		botServer.registerForTournament("RRPRisoners");
 	}
 }
