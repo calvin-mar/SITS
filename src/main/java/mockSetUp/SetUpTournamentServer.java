@@ -60,7 +60,9 @@ public class SetUpTournamentServer {
 		tournament.addParticipant(p11);
 		tournament.addParticipant(p12);
 		
-		ConfigurableApplicationContext context = SpringApplication.run(TournamentServer.class);
+		SpringApplication app = new SpringApplication(TournamentServer.class);
+		app.setAdditionalProfiles("random");
+		ConfigurableApplicationContext context = app.run(args);
 		TournamentServer server = context.getBean(TournamentServer.class);
 		
 		server.addTournament("RRPrisoners", tournament);

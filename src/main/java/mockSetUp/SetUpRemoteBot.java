@@ -9,15 +9,17 @@ import tournamentServer.TournamentServer;
 
 public class SetUpRemoteBot {
 	public void main(String[] args) {
-		String baseURL = "http://" + args[1] + ":" + args[2] + "/";
+		String baseURL = "http://10.14.1.75:PORT/";
 		
-		ConfigurableApplicationContext context = SpringApplication.run(RemoteController.class);
+		SpringApplication app = new SpringApplication(RemoteController.class);
+		app.setAdditionalProfiles("random");
+		ConfigurableApplicationContext context = app.run(args);
 		RemoteController botServer = context.getBean(RemoteController.class);
 		
 		Participant p = new SelfishBot();
 		
-		botServer.setRegistrar(baseURL);
 		botServer.setBotName("Remote Bot");
 		botServer.setParticipantType(p);
+		botServer.setRegistrar(baseURL);
 	}
 }
