@@ -27,18 +27,25 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import models.TournamentServerModel;
+import models.UserClient;
 import models.UserServer;
+import tournamentServer.TournamentServer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+@SpringBootTest(
+		webEnvironment=WebEnvironment.RANDOM_PORT,
+		classes = TournamentServer.class) 
 @ExtendWith(ApplicationExtension.class)
 class ActiveTournamentViewTest {
 	
 	ConfigurableApplicationContext context;
 	TournamentServerModel model;
+	
+	@Autowired
+	private TournamentServer tServer;
 	
 	
 	@Start
@@ -51,6 +58,10 @@ class ActiveTournamentViewTest {
 		ActiveTournamentController controller = loader.getController();
 		Scene s = new Scene(view);
 		this.model = new TournamentServerModel(s);
+		
+		UserClient c = new UserClient(tServer.getIP(), tServer.getPort());
+		this.model.setServerClient(c);
+		
 		controller.setModel(this.model, "RRPrisoners");
 		
 		this.context = SpringApplication.run(UserServer.class);
@@ -99,5 +110,7 @@ class ActiveTournamentViewTest {
 		testMove(robot, "Robot 1", "6", "1", "Robot 2", "1", "0");
 		testMove(robot, "Robot 1", "6", "0", "Robot 2", "6", "1");
 		testMove(robot, "Robot 1", "9", "1", "Robot 2", "9", "1");
+		robot.clickOn("#BackListButton");
+		robot.clickOn("#ListOfTournaments");
 	}
 }

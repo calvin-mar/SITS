@@ -166,6 +166,12 @@ class ViewerTest {
 		testMove(robot, "Selfless Bot", "3", "1", "Alternating Bot", "3", "1");
 		testMove(robot, "Selfless Bot", "3", "1", "Alternating Bot", "8", "0");
 		testMove(robot, "Selfless Bot", "6", "1", "Alternating Bot", "11", "1");
+		
+		robot.clickOn("#BackListButton");
+		robot.clickOn("#ListOfTournaments");
+		robot.clickOn("RRPrisoners 3");
+		robot.clickOn("#backServerButton");
+		robot.clickOn("#IPTextField");
 	}
 	
 	@AfterEach

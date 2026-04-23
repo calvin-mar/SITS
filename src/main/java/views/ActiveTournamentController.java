@@ -34,8 +34,8 @@ public class ActiveTournamentController {
 		SpectateInfo serverInfo = new SpectateInfo(tournamentName,model.getIp().getHostAddress(), model.getPort());
 		
 		model.getServerClient().getClient().put().uri("/stopSpectate").body(serverInfo);
-		
 		try {
+			System.out.println("Switching to serverlist.");
 			model.showServerList();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
