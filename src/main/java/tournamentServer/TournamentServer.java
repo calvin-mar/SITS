@@ -130,9 +130,9 @@ public class TournamentServer {
 		for(MoveListener l: spectators) {
 			if(l.getServerData().equals(u)) {
 				listener = l;
-				spectators.remove(listener);
 			}
 		}
+		spectators.remove(listener);
 		if(!(listener == null)) {
 			this.availableTournaments.get(serverInfo.tournamentName).getGame().deregisterActions(listener);
 			return "Successful deregister";

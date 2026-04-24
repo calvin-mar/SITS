@@ -32,8 +32,7 @@ public class ActiveTournamentController {
 	void onClickBack(ActionEvent event) {
 		String tournamentName = TournamentNameLabel.getText();
 		SpectateInfo serverInfo = new SpectateInfo(tournamentName,model.getIp().getHostAddress(), model.getPort());
-		
-		model.getServerClient().getClient().put().uri("/stopSpectate").body(serverInfo);
+		model.getServerClient().getClient().put().uri("/stopSpectate").body(serverInfo).retrieve().toBodilessEntity();
 		try {
 			System.out.println("Switching to serverlist.");
 			model.showServerList();
