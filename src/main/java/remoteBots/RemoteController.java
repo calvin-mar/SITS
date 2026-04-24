@@ -45,6 +45,12 @@ public class RemoteController {
 	
 	public void setParticipantType(Participant participant) {
 		this.participantType = participant;
+		if(this.botName == null) {
+			this.participantType.setName("Remote Bot");
+		}
+		else {
+			this.participantType.setName(this.botName);
+		}
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
@@ -80,7 +86,7 @@ public class RemoteController {
 	
 	public void setRegistrar(String baseURL) {
 		try {
-			this.registrar = new RemoteRegistration(this.participantType.getName(), InetAddress.getLocalHost(), this.serverContext.getWebServer().getPort(), baseURL);
+			this.registrar = new RemoteRegistration(this.participantType.getName(), InetAddress.getByName(InetAddress.getLocalHost().getHostAddress()), this.serverContext.getWebServer().getPort(), baseURL);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

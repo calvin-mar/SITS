@@ -169,6 +169,7 @@ class ViewerTest {
 		
 		robot.clickOn("#BackListButton");
 		robot.clickOn("#ListOfTournaments");
+		assertTrue(server.getSpectators().isEmpty());
 		robot.clickOn("RRPrisoners 3");
 		robot.clickOn("#backServerButton");
 		robot.clickOn("#IPTextField");

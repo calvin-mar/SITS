@@ -130,6 +130,7 @@ public class TournamentServer {
 		for(MoveListener l: spectators) {
 			if(l.getServerData().equals(u)) {
 				listener = l;
+				spectators.remove(listener);
 			}
 		}
 		if(!(listener == null)) {
@@ -147,6 +148,10 @@ public class TournamentServer {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public ArrayList<MoveListener> getSpectators(){
+		return spectators;
 	}
 	
 	public int getPort() {
