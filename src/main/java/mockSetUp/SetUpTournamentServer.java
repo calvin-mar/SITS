@@ -7,7 +7,7 @@ import tournamentServer.*;
 import tournament.*;
 
 public class SetUpTournamentServer {
-	public void main(String[] args) {
+	public static void main(String[] args) {
 		Bracket bracket = new RoundRobinBracket();
 		Game game = new IteratedPrisonerDilemna(3);
 		Tournament tournament = new Tournament(game, bracket);

@@ -8,7 +8,7 @@ import tournament.*;
 import tournamentServer.TournamentServer;
 
 public class SetUpRemoteBot {
-	public void main(String[] args) {
+	public static void main(String[] args) {
 		String baseURL = "http://10.14.1.75:PORT/";
 		
 		SpringApplication app = new SpringApplication(RemoteController.class);
