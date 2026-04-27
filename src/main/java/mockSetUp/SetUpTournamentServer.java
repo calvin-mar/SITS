@@ -64,6 +64,7 @@ public class SetUpTournamentServer {
 		app.setAdditionalProfiles("random");
 		ConfigurableApplicationContext context = app.run(args);
 		TournamentServer server = context.getBean(TournamentServer.class);
+		System.out.println(server.getPort());
 		
 		server.addTournament("RRPrisoners", tournament);
 		server.addTournament("RRPrisoners 2", tournament2);
