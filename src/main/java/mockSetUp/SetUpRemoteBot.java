@@ -18,8 +18,9 @@ public class SetUpRemoteBot {
 		
 		Participant p = new SelfishBot();
 		
-		botServer.setBotName("Remote Bot");
+
 		botServer.setParticipantType(p);
+		botServer.setBotName("Remote Bot");
 		botServer.setRegistrar(baseURL);
 		botServer.registerForTournament("RRPRisoners");
 	}

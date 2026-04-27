@@ -43,8 +43,8 @@ public class SetUpTournamentServer {
 		p8.setName("Jonah");
 		p9.setName("Edward");
 		p10.setName("Helen");
-		p5.setName("Genevieve");
-		p6.setName("Andrew");
+		p11.setName("Genevieve");
+		p12.setName("Andrew");
 
 		
 		tournament.addParticipant(p1);
